@@ -5,6 +5,7 @@ const Users = `CREATE TABLE IF NOT EXISTS users(
 	username VARCHAR(100) NOT NULL,
 	email VARCHAR(100) UNIQUE NOT NULL,
 	password VARCHAR(100) NOT NULL,
+	image VARCHAR(255) NOT NULL,
 	create_at TIMESTAMP NOT NULL,
 	update_at TIMESTAMP NOT NULL
 );`
@@ -16,7 +17,7 @@ language plpgsql
 as 
 $$
 BEGIN
-	SELECT count(*) INTO nameC FROM users WHERE username =  $1;
+	SELECT count(*) INTO nameC FROM users WHERE username = $1;
 	SELECT count(*) INTO emailC FROM users WHERE email = $2;
 END;
 $$;`

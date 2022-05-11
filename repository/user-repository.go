@@ -32,7 +32,7 @@ func (u *userR) GetOne(ctx context.Context, id float64) pgx.Row {
 }
 
 func (u *userR) Update(ctx context.Context, update models.Update, id float64) error {
-	_, err := u.db.Exec(ctx, sql.UpdateUser, id, update.Username, update.Email)
+	_, err := u.db.Exec(ctx, sql.UpdateUser, id, update.Username, update.Email, update.Image)
 
 	return err
 }

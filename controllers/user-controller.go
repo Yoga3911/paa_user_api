@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"user_api/helper"
+	"user_api/middleware"
 	"user_api/models"
 	"user_api/services"
 
@@ -40,6 +41,10 @@ func (u *userC) UpdateUser(c *fiber.Ctx) error {
 
 	if err = u.userS.CheckEmail(c.Context(), update.Email, c.Get("Authorization")); err != nil {
 		return helper.Response(c, fiber.StatusNotAcceptable, nil, err.Error(), false)
+	}
+
+	if errors := middleware.StructValidator(update); errors != nil {
+		return helper.Response(c, fiber.StatusConflict, nil, errors, false)
 	}
 
 	token, err := u.userS.Update(c.Context(), update, c.Get("Authorization"))

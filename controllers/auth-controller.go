@@ -4,6 +4,7 @@ import (
 	"user_api/models"
 	"user_api/services"
 	"user_api/helper"
+	"user_api/middleware"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -29,6 +30,10 @@ func (a *authC) Login(c *fiber.Ctx) error {
 		return helper.Response(c, fiber.StatusNotAcceptable, nil, err.Error(), false)
 	}
 
+	if errors := middleware.StructValidator(user); errors != nil {
+		return helper.Response(c, fiber.StatusConflict, nil, errors, false)
+	}
+
 	token, usr, err := a.authS.VerifyCredential(c.Context(), user)
 	if err != nil {
 		return helper.Response(c, fiber.StatusConflict, nil, err.Error(), false)
@@ -48,6 +53,10 @@ func (a *authC) Register(c *fiber.Ctx) error {
 	err := c.BodyParser(&user)
 	if err != nil {
 		return helper.Response(c, fiber.StatusNotAcceptable, nil, err.Error(), false)
+	}
+	
+	if errors := middleware.StructValidator(user); errors != nil {
+		return helper.Response(c, fiber.StatusConflict, nil, errors, false)
 	}
 
 	if err = a.authS.CreateUser(c.Context(), user); err != nil {

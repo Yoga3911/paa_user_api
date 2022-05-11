@@ -1,9 +1,9 @@
 package sql
 
-const CreateUser = `INSERT INTO users (username, email, password, create_at, update_at)
-					VALUES ($1, $2, $3, NOW(), NOW())`
+const CreateUser = `INSERT INTO users (username, email, password, image, create_at, update_at)
+					VALUES ($1, $2, $3, $4, NOW(), NOW())`
 
-const VerifyCredential = `SELECT id, username, email, password, create_at, update_at FROM users WHERE email = $1`
+const VerifyCredential = `SELECT id, username, email, password, image, create_at, update_at FROM users WHERE email = $1`
 
 const GetLastId = `SELECT COUNT(*) FROM users`
 

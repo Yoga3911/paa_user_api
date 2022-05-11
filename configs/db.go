@@ -29,7 +29,7 @@ func DatabaseConnection() *pgxpool.Pool {
 		log.Println(err.Error())
 	}
 
-	action := 1
+	action := 0
 	switch action {
 	case 1:
 		log.Println("Migration")
@@ -37,6 +37,8 @@ func DatabaseConnection() *pgxpool.Pool {
 	case 2:
 		log.Println("Rollback")
 		rollback(pg)
+	default:
+		log.Println("No Action")
 	}
 
 	return pg

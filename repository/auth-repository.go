@@ -24,7 +24,7 @@ func NewAuthR(db *pgxpool.Pool) AuthR {
 }
 
 func (a *authR) InsertData(ctx context.Context, user models.Register, hash string) error {
-	_, err := a.db.Exec(ctx, sql.CreateUser, user.Username, user.Email, hash)
+	_, err := a.db.Exec(ctx, sql.CreateUser, user.Username, user.Email, hash, user.Image)
 
 	return err
 }
@@ -32,7 +32,7 @@ func (a *authR) InsertData(ctx context.Context, user models.Register, hash strin
 func (a *authR) VerifyData(ctx context.Context, email string) (models.User, error) {
 	var usr models.User
 
-	err := a.db.QueryRow(ctx, sql.VerifyCredential, email).Scan(&usr.ID, &usr.Username, &usr.Email, &usr.Password, &usr.CreateAt, &usr.UpdateAt)
+	err := a.db.QueryRow(ctx, sql.VerifyCredential, email).Scan(&usr.ID, &usr.Username, &usr.Email, &usr.Password, &usr.Image, &usr.CreateAt, &usr.UpdateAt)
 	if err != nil {
 		return usr, err
 	}

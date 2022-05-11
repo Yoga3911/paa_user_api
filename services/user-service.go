@@ -36,7 +36,7 @@ func (u *userS) GetOne(ctx context.Context, token string) (models.User, error) {
 
 	claims := t.Claims.(jwt.MapClaims)
 
-	err = u.userR.GetOne(ctx, claims["id"].(float64)).Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.CreateAt, &user.UpdateAt)
+	err = u.userR.GetOne(ctx, claims["id"].(float64)).Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.Image, &user.CreateAt, &user.UpdateAt)
 	if err != nil {
 		return user, err
 	}
