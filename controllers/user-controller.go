@@ -47,8 +47,13 @@ func (u *userC) UpdateUser(c *fiber.Ctx) error {
 		return helper.Response(c, fiber.StatusConflict, nil, err.Error(), false)
 	}
 
+	user, err := u.userS.GetOne(c.Context(), c.Get("Authorization"))
+	if err != nil {
+		return helper.Response(c, fiber.StatusBadRequest, nil, err.Error(), false)
+	}
+
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"data":    nil,
+		"data":    user,
 		"token":   token,
 		"status":  true,
 		"message": "Update user success",
