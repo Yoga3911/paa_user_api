@@ -13,8 +13,11 @@ import (
 var (
 	DB *pgxpool.Pool = configs.DatabaseConnection()
 
-
 	jwtS services.JWTS = services.NewJWTS()
+
+	userR repository.UserR  = repository.NewUserR(DB)
+	userS services.UserS    = services.NewUserS(DB, userR, jwtS)
+	userC controllers.UserC = controllers.NewUserC(userS)
 
 	authR repository.AuthR  = repository.NewAuthR(DB)
 	authS services.AuthS    = services.NewAuthS(authR, jwtS)
@@ -27,9 +30,8 @@ func Route(app *fiber.App) {
 	api.Post("/auth/login", authC.Login)
 	api.Post("/auth/register", authC.Register)
 
-	// api.Get("/users", userC.GetAll)
-	// api.Get("/user", userC.GetByToken)
-	// api.Put("/user", userC.UpdateUser)
+	api.Get("/user", userC.GetByToken)
+	api.Put("/user", userC.UpdateUser)
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("OK!")
